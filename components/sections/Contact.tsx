@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Github, Linkedin, Mail, Instagram } from "lucide-react";
+import { Github, Linkedin, Mail, Instagram, MapPin } from "lucide-react";
 
 export default function Contact() {
   const [ref, inView] = useInView({
@@ -21,12 +21,18 @@ export default function Contact() {
         className="max-w-2xl mx-auto text-center"
       >
         <h2 className="text-4xl font-bold mb-8 gradient-text">Get In Touch</h2>
-        <Card className="bg-background/40 backdrop-blur-sm border-blue-500/20 hover:border-green-500/30 transition-all duration-300">
+        <Card className="bg-background/40 backdrop-blur-sm border-blue-500/20 hover:border-green-500/30 transition-all duration-300 group">
           <CardHeader>
             <CardTitle className="gradient-text">Let's Connect</CardTitle>
+            <div className="flex items-center justify-center gap-2 mt-2">
+              <div className="p-2 rounded-full bg-blue-500/10 group-hover:bg-green-500/20 transition-all duration-500">
+                <MapPin className="h-4 w-4 text-blue-300 group-hover:text-green-400 transition-colors duration-500" />
+              </div>
+              <span className="text-blue-200/70 group-hover:text-green-400/70 transition-colors duration-500">Mumbai, India</span>
+            </div>
           </CardHeader>
           <CardContent className="flex flex-col items-center gap-4">
-            <p className="text-blue-200/90 mb-6">
+            <p className="text-blue-200/90 mb-6 group-hover:text-green-400/90 transition-colors duration-500">
               I'm always open to new opportunities and collaborations. Feel free to reach out through any of these platforms:
             </p>
             <div className="flex flex-wrap gap-4 justify-center">

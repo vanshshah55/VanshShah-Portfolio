@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://vanshshah.netlify.app/sitemap.xml 
+Sitemap: https://vanshshahportfolio.netlify.app/sitemap.xml 

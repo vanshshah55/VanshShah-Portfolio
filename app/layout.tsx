@@ -9,7 +9,7 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://vanshshah.netlify.app'),
+  metadataBase: new URL('https://vanshshahportfolio.netlify.app'),
   title: 'Vansh Shah - Portfolio',
   description: 'Personal portfolio showcasing my work experience and projects in AI, web development and software engineering',
   keywords: ['Vansh Shah','web development', 'software engineer', 'portfolio', 'react', 'next.js'],

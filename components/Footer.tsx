@@ -26,6 +26,9 @@ export default function Footer() {
         <p className="text-m">
           Crafted with love ❤️ and the power of AI by <span className="gradient-text font-semibold">Vansh Shah</span>.
         </p>
+        <p className="text-m">
+          Built using Next.js, TypeScript, Tailwind CSS, and Framer Motion.
+        </p>
       </div>
     </motion.footer>
   );
