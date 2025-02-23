@@ -75,7 +75,7 @@ export default function Contact() {
                   className="flex items-center gap-2 text-blue-200/90 hover:text-green-400 transition-colors duration-300"
                 >
                   <Mail className="h-5 w-5" />
-                  Email
+                  Email : vips.vansh@gmail.com
                 </a>
               </Button>
             </div>
