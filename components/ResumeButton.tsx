@@ -19,7 +19,7 @@ export default function ResumeButton() {
         asChild
       >
         <a
-          href="https://drive.google.com/file/d/1ctoKsSxMevEaCoTeNPi8KXJPc5aWmQQv/view?usp=sharing"
+          href="https://drive.google.com/file/d/16jmMkZj_cTUTLblk4zWYsTtAT9gPoBoi/view?usp=sharing"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-2"

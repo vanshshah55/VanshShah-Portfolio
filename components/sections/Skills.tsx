@@ -14,7 +14,7 @@ import {
   SiOpenai, SiGooglecloud, SiPostman, SiTableau,
   SiCanva, SiFigma, SiMysql, SiOracle, SiGoogleanalytics,
   SiCplusplus, SiC, SiGit, SiVmware, SiVirtualbox,
-  SiScikitlearn, SiGooglecolab,
+  SiScikitlearn, SiGooglecolab, SiTypescript, SiNextdotjs,
 } from "react-icons/si";
 import { TbBrandVscode, TbBrain, TbRobot, TbEye } from "react-icons/tb";
 import { BiNetworkChart, BiData } from "react-icons/bi";
@@ -26,6 +26,8 @@ const skillCategories = [
     icon: FaReact,
     skills: [
       { name: "MERN Stack (MongoDB, Express.js, React.js, Node.js)", icon: FaReact },
+      { name: "Next.js", icon: SiNextdotjs },
+      { name: "TypeScript", icon: SiTypescript },
       { name: "Electron.js", icon: SiElectron },
       { name: "HTML 5", icon: FaHtml5 },
       { name: "CSS", icon: FaCss3Alt },
