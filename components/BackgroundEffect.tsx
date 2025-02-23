@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
 
 interface Point {
   x: number;
@@ -15,31 +14,40 @@ export default function BackgroundEffect() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const pointsRef = useRef<Point[]>([]);
   const animationFrameRef = useRef<number>();
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Initialize points
   useEffect(() => {
     const initPoints = () => {
       const points: Point[] = [];
-      const numPoints = 40;
+      // Fewer points for mobile
+      const numPoints = isMobile ? 20 : 40;
       
       for (let i = 0; i < numPoints; i++) {
-        // Determine if this point should be on left or right side
         const side = Math.random() > 0.5 ? 'left' : 'right';
         let x;
         
         if (side === 'left') {
-          // Place points in the left third of the screen
           x = Math.random() * (window.innerWidth / 3);
         } else {
-          // Place points in the right third of the screen
           x = (window.innerWidth * 2/3) + (Math.random() * (window.innerWidth / 3));
         }
         
         points.push({
           x: x,
           y: Math.random() * window.innerHeight,
-          vx: (Math.random() - 0.5) * 0.5,
-          vy: (Math.random() - 0.5) * 0.5,
+          vx: (Math.random() - 0.5) * (isMobile ? 0.3 : 0.5), // Slower movement on mobile
+          vy: (Math.random() - 0.5) * (isMobile ? 0.3 : 0.5),
         });
       }
       
@@ -48,9 +56,8 @@ export default function BackgroundEffect() {
 
     initPoints();
     window.addEventListener('resize', initPoints);
-    
     return () => window.removeEventListener('resize', initPoints);
-  }, []);
+  }, [isMobile]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -65,19 +72,13 @@ export default function BackgroundEffect() {
 
     handleResize();
     window.addEventListener('resize', handleResize);
-
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', (e) => setMousePosition({ x: e.clientX, y: e.clientY }));
 
     const animate = () => {
       if (!canvas || !ctx) return;
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Update points
       pointsRef.current.forEach(point => {
         point.x += point.vx;
         point.y += point.vy;
@@ -90,39 +91,37 @@ export default function BackgroundEffect() {
       pointsRef.current.forEach((point, i) => {
         pointsRef.current.slice(i + 1).forEach(otherPoint => {
           const distance = Math.hypot(point.x - otherPoint.x, point.y - otherPoint.y);
-          const maxDistance = 180; // Increased connection distance
+          const maxDistance = isMobile ? 120 : 180; // Reduced connection distance on mobile
           
           if (distance < maxDistance) {
             const opacity = 1 - (distance / maxDistance);
-            
             ctx.beginPath();
             ctx.moveTo(point.x, point.y);
             ctx.lineTo(otherPoint.x, otherPoint.y);
-            ctx.strokeStyle = `rgba(167, 139, 250, ${opacity * 0.6})`; // Increased opacity
-            ctx.lineWidth = 1.5; // Increased line width
+            ctx.strokeStyle = `rgba(167, 139, 250, ${opacity * (isMobile ? 0.4 : 0.6)})`; // Reduced opacity on mobile
+            ctx.lineWidth = isMobile ? 1 : 1.5;
             ctx.stroke();
           }
         });
 
         // Mouse interaction
         const mouseDistance = Math.hypot(point.x - mousePosition.x, point.y - mousePosition.y);
-        const mouseMaxDistance = 250; // Increased mouse interaction distance
+        const mouseMaxDistance = isMobile ? 150 : 250;
         
         if (mouseDistance < mouseMaxDistance) {
           const opacity = 1 - (mouseDistance / mouseMaxDistance);
-          
           ctx.beginPath();
           ctx.moveTo(point.x, point.y);
           ctx.lineTo(mousePosition.x, mousePosition.y);
-          ctx.strokeStyle = `rgba(96, 165, 250, ${opacity * 0.9})`; // Increased opacity
-          ctx.lineWidth = 1.5; // Increased line width
+          ctx.strokeStyle = `rgba(96, 165, 250, ${opacity * (isMobile ? 0.6 : 0.9)})`;
+          ctx.lineWidth = isMobile ? 1 : 1.5;
           ctx.stroke();
         }
 
         // Draw point
         ctx.beginPath();
-        ctx.arc(point.x, point.y, 3, 0, Math.PI * 2); // Increased point size
-        ctx.fillStyle = 'rgba(167, 139, 250, 0.9)'; // Increased opacity
+        ctx.arc(point.x, point.y, isMobile ? 2 : 3, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(167, 139, 250, ${isMobile ? 0.7 : 0.9})`;
         ctx.fill();
       });
 
@@ -133,12 +132,11 @@ export default function BackgroundEffect() {
 
     return () => {
       window.removeEventListener('resize', handleResize);
-      window.removeEventListener('mousemove', handleMouseMove);
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [mousePosition]);
+  }, [mousePosition, isMobile]);
 
   return (
     <div className="fixed inset-0" style={{ zIndex: -1 }}>

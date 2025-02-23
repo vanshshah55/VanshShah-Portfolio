@@ -4,10 +4,12 @@ import { motion, useAnimationControls } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import ResumeButton from "./ResumeButton";
+import { Menu, X } from "lucide-react";
 
 export default function Navbar() {
   const [activeSection, setActiveSection] = useState("home");
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const controls = useAnimationControls();
 
   const sections = [
@@ -110,6 +112,23 @@ export default function Navbar() {
             VS
           </motion.span>
           
+          {/* Mobile menu button */}
+          <div className="md:hidden">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="text-foreground"
+            >
+              {isMobileMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
+            </Button>
+          </div>
+
+          {/* Desktop menu */}
           <div className="hidden md:flex items-center space-x-2">
             {sections.map((section, index) => (
               <motion.div
@@ -147,6 +166,37 @@ export default function Navbar() {
             ))}
           </div>
         </div>
+
+        {/* Mobile menu dropdown */}
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="md:hidden bg-background/95 backdrop-blur-lg py-4"
+          >
+            <div className="flex flex-col space-y-2">
+              {sections.map((section, index) => (
+                <Button
+                  key={section.id}
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    scrollToSection(section.id);
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className={`w-full text-left px-4 py-2 ${
+                    activeSection === section.id
+                      ? 'text-green-400'
+                      : 'text-foreground hover:text-green-400/80'
+                  }`}
+                >
+                  {section.label}
+                </Button>
+              ))}
+            </div>
+          </motion.div>
+        )}
       </div>
     </motion.nav>
   );

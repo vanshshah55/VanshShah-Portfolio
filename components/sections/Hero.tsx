@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Float } from "@react-three/drei";
@@ -11,6 +11,18 @@ import Typed from "typed.js";
 
 export default function Hero() {
   const typedRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     const typed = new Typed(typedRef.current, {
@@ -32,19 +44,22 @@ export default function Hero() {
   }, []);
 
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden">
+    <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden py-20">
       <div className="absolute inset-0">
         <Canvas 
-          camera={{ position: [0, 0, 12], fov: 40 }}
-          className="translate-y-[50px]"
+          camera={{ 
+            position: [0, 0, isMobile ? 16 : 12], 
+            fov: isMobile ? 50 : 40 
+          }}
+          className="translate-y-[50px] opacity-50 md:opacity-100"
         >
           <ambientLight intensity={0.7} />
           <directionalLight position={[10, 10, 5]} intensity={1.5} />
           <pointLight position={[-10, -10, -5]} intensity={0.5} color="#67e8f9" />
           <Float
             speed={1.2}
-            rotationIntensity={0.4}
-            floatIntensity={0.4}
+            rotationIntensity={isMobile ? 0.2 : 0.4}
+            floatIntensity={isMobile ? 0.2 : 0.4}
           >
             <CodeModel />
           </Float>
@@ -63,16 +78,16 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-7xl font-bold mb-4 gradient-text"
+          className="text-4xl md:text-7xl font-bold mb-4 gradient-text"
         >
-          Vansh Vipul Shah
+          Vansh Shah
         </motion.h1>
         
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-2xl glow-text mb-8 h-8"
+          className="text-xl md:text-2xl glow-text mb-8 h-8"
         >
           <span ref={typedRef}></span>
         </motion.div>
@@ -81,13 +96,13 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="flex justify-between max-w-4xl mx-auto px-20"
+          className="flex flex-col md:flex-row justify-center md:justify-between max-w-4xl mx-auto px-4 md:px-20 gap-4"
         >
-          <div className="flex gap-4">
+          <div className="flex flex-wrap justify-center gap-4">
             <Button
               variant="outline"
               size="lg"
-              className="bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/50 hover:border-blue-500 text-blue-200/90 "
+              className="bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/50 hover:border-blue-500 text-blue-200/90"
               asChild
             >
               <a href="https://github.com/vanshshah55" target="_blank" rel="noopener noreferrer">
@@ -98,7 +113,7 @@ export default function Hero() {
             <Button
               variant="outline"
               size="lg"
-              className="bg-purple-500/10 hover:bg-purple-500/20 border-purple-500/50 hover:border-purple-500 text-blue-200/90 "
+              className="bg-purple-500/10 hover:bg-purple-500/20 border-purple-500/50 hover:border-purple-500 text-blue-200/90"
               asChild
             >
               <a href="https://linkedin.com/in/vanshshah55" target="_blank" rel="noopener noreferrer">
@@ -108,11 +123,11 @@ export default function Hero() {
             </Button>
           </div>
           
-          <div className="flex gap-4">
+          <div className="flex flex-wrap justify-center gap-4">
             <Button
               variant="outline"
               size="lg"
-              className="bg-cyan-500/10 hover:bg-cyan-500/20 border-cyan-500/50 hover:border-cyan-500 text-blue-200/90 "
+              className="bg-cyan-500/10 hover:bg-cyan-500/20 border-cyan-500/50 hover:border-cyan-500 text-blue-200/90"
               asChild
             >
               <a href="mailto:vips.vansh@gmail.com">
@@ -123,7 +138,7 @@ export default function Hero() {
             <Button
               variant="outline"
               size="lg"
-              className="bg-pink-500/10 hover:bg-pink-500/20 border-pink-500/50 hover:border-pink-500 text-blue-200/90 "
+              className="bg-pink-500/10 hover:bg-pink-500/20 border-pink-500/50 hover:border-pink-500 text-blue-200/90"
               asChild
             >
               <a href="https://instagram.com/vanshshah55" target="_blank" rel="noopener noreferrer">

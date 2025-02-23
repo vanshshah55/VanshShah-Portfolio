@@ -148,7 +148,7 @@ export default function Skills() {
         initial={{ opacity: 0, y: 20 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.6 }}
-        className="text-5xl font-bold text-center mb-12 gradient-text leading-relaxed"
+        className="text-3xl md:text-5xl font-bold text-center mb-8 md:mb-12 gradient-text leading-relaxed"
       >
         Skills & Technologies
       </motion.h2>
@@ -157,7 +157,7 @@ export default function Skills() {
         variants={containerVariants}
         initial="hidden"
         animate={inView ? "visible" : "hidden"}
-        className="grid gap-8 md:grid-cols-2"
+        className="grid gap-8 grid-cols-1 md:grid-cols-2"
       >
         {skillCategories.map((category, index) => (
           <motion.div
